@@ -1,10 +1,6 @@
-abstract class Shape {
-    protected int x, y;
-
-    public Shape(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public abstract String toSVG();
+public interface Shape {
+    String toSVG();
+    void move(int deltaX, int deltaY);
+    boolean isWithinCircle(double cx, double cy, double radius);
+    boolean isWithinRectangle(double x, double y, double width, double height);
 }

@@ -1,14 +1,58 @@
-public class Rectangle extends Shape{
-    private int width, height;
+public class Rectangle implements Shape{
+    private double x;
+    private double y;
+    private double width;
+    private double height;
+    private String fill;
 
-    public Rectangle(int x, int y, int width, int height) {
-        super(x, y);
+    public Rectangle(double x, double y, double width, double height, String fill) {
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
+        this.fill = fill;
+    }
+
+    @Override
+    public boolean isWithinCircle(double cx, double cy, double radius) {
+        return (x >= cx - radius && (x + width) <= cx + radius &&
+                y >= cy - radius && (y + height) <= cy + radius);
+    }
+
+    @Override
+    public boolean isWithinRectangle(double rx, double ry, double rWidth, double rHeight) {
+        return (x >= rx && (x + width) <= (rx + rWidth) &&
+                y >= ry && (y + height) <= (ry + rHeight));
     }
 
     @Override
     public String toSVG() {
-        return String.format("<rect x='%d' y='%d' width='%d' height='%d' stroke='black' fill='none'/>", x, y, width, height);
+        return String.format("<rect x=\"%f\" y=\"%f\" width=\"%f\" height=\"%f\" fill=\"%s\" />", x, y, width, height, fill);
+    }
+
+    @Override
+    public void move(int deltaX, int deltaY) {
+        x += deltaX;
+        y += deltaY;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public String getFill() {
+        return fill;
     }
 }
