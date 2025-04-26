@@ -1,4 +1,6 @@
-public class Rectangle implements Shape{
+package bg.tu_varna.sit.b1.f23621713;
+
+public class Rectangle implements Shape {
     private double x;
     private double y;
     private double width;

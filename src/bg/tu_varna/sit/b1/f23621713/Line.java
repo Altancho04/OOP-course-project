@@ -1,4 +1,6 @@
-public class Line implements Shape{
+package bg.tu_varna.sit.b1.f23621713;
+
+public class Line implements Shape {
     private int x1, y1, x2, y2;
 
     public Line(int x1, int y1, int x2, int y2) {

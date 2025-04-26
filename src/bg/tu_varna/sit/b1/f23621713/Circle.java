@@ -1,4 +1,6 @@
-public class Circle implements Shape{
+package bg.tu_varna.sit.b1.f23621713;
+
+public class Circle implements Shape {
     private double centerX;
     private double centerY;
     private double radius;

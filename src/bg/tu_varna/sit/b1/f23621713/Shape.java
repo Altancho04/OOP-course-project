@@ -1,3 +1,5 @@
+package bg.tu_varna.sit.b1.f23621713;
+
 public interface Shape {
     String toSVG();
     void move(int deltaX, int deltaY);
