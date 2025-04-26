@@ -141,7 +141,7 @@ public class SVGApplication {
                 deltaX = Integer.parseInt(part.substring("horizontal=".length()));
             } else {
                 try {
-                    index = Integer.parseInt(part); // Ако е число, това е индекс на фигура
+                    index = Integer.parseInt(part);
                 } catch (NumberFormatException ignored) {
                 }
             }
