@@ -11,6 +11,8 @@ public class SVGApplication {
     public void start() {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Welcome to the SVG Application!");
+
         while (running) {
             System.out.print("> ");
             String command = scanner.nextLine();
@@ -93,12 +95,15 @@ public class SVGApplication {
         switch (shapeType) {
             case "line":
                 shapeManager.addShape(new Line(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])));
+                System.out.println("Successfully created line.");
                 break;
             case "circle":
                 shapeManager.addShape(new Circle(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), color));
+                System.out.println("Successfully created circle.");
                 break;
             case "rectangle":
                 shapeManager.addShape(new Rectangle(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), color));
+                System.out.println("Successfully created rectangle.");
                 break;
             default:
                 System.out.println("Unknown shape type.");
