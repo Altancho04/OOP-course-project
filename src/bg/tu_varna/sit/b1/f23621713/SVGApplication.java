@@ -130,13 +130,27 @@ public class SVGApplication {
 
 
     private void translateShape(String[] parts) {
-        int deltaX = 10;
-        int deltaY = 10;
+        int deltaX = 0;
+        int deltaY = 0;
+        Integer index = null;
 
-        if (parts.length == 2) {
-            int index = Integer.parseInt(parts[1]);
+        for (String part : parts) {
+            if (part.startsWith("vertical=")) {
+                deltaY = Integer.parseInt(part.substring("vertical=".length()));
+            } else if (part.startsWith("horizontal=")) {
+                deltaX = Integer.parseInt(part.substring("horizontal=".length()));
+            } else {
+                try {
+                    index = Integer.parseInt(part); // Ако е число, това е индекс на фигура
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+
+        if (index != null) {
             if (index >= 0 && index < shapeManager.getShapes().size()) {
                 shapeManager.moveShape(shapeManager.getShapes().get(index), deltaX, deltaY);
+                System.out.println("Translated figure " + index);
             } else {
                 System.out.println("Invalid index.");
             }
