@@ -8,11 +8,9 @@ import java.util.List;
 
 /**
  * Клас, който се грижи за зареждане на фигури от SVG файлове
- * (четене на основни атрибути като позиция, размер и цвят)
  * и записване на промените обратно във валидни SVG файлове.
  * Поддържа само основните SVG елементи: правоъгълник, кръг и линия.
  */
-
 
 public class SVGFileHandler {
     public void openFile(String filename, ShapeManager shapeManager) throws IOException {

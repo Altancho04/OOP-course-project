@@ -81,10 +81,10 @@ public class SVGApplication {
 
             if (shape instanceof Rectangle) {
                 Rectangle rect = (Rectangle) shape;
-                System.out.printf("%d. rectangle %f %f %f %f %s\n", i, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), rect.getFill());
+                System.out.printf("%d. rectangle %.0f %.0f %.0f %.0f %s\n", i, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), rect.getFill());
             } else if (shape instanceof Circle) {
                 Circle circle = (Circle) shape;
-                System.out.printf("%d. circle %f %f %f %s\n", i, circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getFill());
+                System.out.printf("%d. circle %.0f %.0f %.0f %s\n", i, circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getFill());
             } else if (shape instanceof Line) {
                 Line line = (Line) shape;
                 System.out.printf("%d. line %d %d %d %d\n", i, line.getX1(), line.getY1(), line.getX2(), line.getY2());
