@@ -3,6 +3,12 @@ package bg.tu_varna.sit.b1.f23621713;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Клас за управление на списък от фигури (Shape).
+ * Позволява добавяне на нови фигури, премахване, преместване на фигури
+ * и извеждане на съдържанието като валиден SVG документ.
+ */
+
 public class ShapeManager {
     private List<Shape> shapes = new ArrayList<>();
 

@@ -1,5 +1,11 @@
 package bg.tu_varna.sit.b1.f23621713;
 
+/**
+ * Клас, който представя кръг във векторна графика SVG.
+ * Реализира интерфейса Shape и осигурява операции като преместване,
+ * проверка за съдържание в регион и генериране на SVG елемент.
+ */
+
 public class Circle implements Shape {
     private double centerX;
     private double centerY;

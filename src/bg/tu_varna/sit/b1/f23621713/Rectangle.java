@@ -1,5 +1,12 @@
 package bg.tu_varna.sit.b1.f23621713;
 
+/**
+ * Клас, който представя правоъгълник във векторна графика SVG.
+ * Реализира интерфейса Shape и предоставя функционалности
+ * за движение на правоъгълника, проверка за съдържание в регион
+ * и генериране на SVG представяне.
+ */
+
 public class Rectangle implements Shape {
     private double x;
     private double y;

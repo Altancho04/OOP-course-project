@@ -3,6 +3,12 @@ package bg.tu_varna.sit.b1.f23621713;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Основен клас за работа с командния ред на приложението.
+ * Приема команди от потребителя като open, save, create, erase, translate, within и други,
+ * и осъществява връзката между потребителския интерфейс, фигури и файловата система.
+ */
+
 public class SVGApplication {
 
     private ShapeManager shapeManager = new ShapeManager();
@@ -59,6 +65,7 @@ public class SVGApplication {
                 displayHelp();
                 break;
             case "exit":
+                System.out.println("Exiting the application.");
                 running = false;
                 break;
             default:
