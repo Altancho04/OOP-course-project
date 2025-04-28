@@ -75,6 +75,11 @@ public class SVGApplication {
 
 
     private void printShapes() {
+        if (currentFilePath == null) {
+            System.out.println("No file is currently open.");
+            return;
+        }
+
         System.out.println("Shapes:");
         for (int i = 0; i < shapeManager.getShapes().size(); i++) {
             Shape shape = shapeManager.getShapes().get(i);
