@@ -1,24 +1,23 @@
 package bg.tu_varna.sit.b1.f23621713;
 
+import java.util.*;
+import java.util.function.Consumer;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
- * Основен клас за работа с командния ред на приложението.
- * Приема команди от потребителя като open, save, create, erase, translate, within и други,
- * и осъществява връзката между потребителския интерфейс, фигури и файловата система.
+ * Главен клас, който предоставя команден интерфейс за работа със SVG фигури.
  */
-
 public class SVGApplication {
-
     private ShapeManager shapeManager = new ShapeManager();
     private SVGFileHandler fileHandler = new SVGFileHandler();
     private boolean running = true;
     private String currentFilePath = null;
 
-    public void start() {
-        Scanner scanner = new Scanner(System.in);
+    private final Map<String, Consumer<String[]>> commandMap = new HashMap<>();
 
+    public void start() {
+        initializeCommands();
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the SVG Application!");
 
         while (running) {
@@ -26,101 +25,85 @@ public class SVGApplication {
             String command = scanner.nextLine();
             processCommand(command);
         }
+
         scanner.close();
+    }
+
+    private void initializeCommands() {
+        commandMap.put("print", parts -> printShapes());
+        commandMap.put("create", this::createShape);
+        commandMap.put("erase", this::eraseShape);
+        commandMap.put("translate", this::translateShape);
+        commandMap.put("within", this::within);
+        commandMap.put("open", this::openFile);
+        commandMap.put("close", parts -> closeFile());
+        commandMap.put("save", parts -> saveFile());
+        commandMap.put("saveas", this::saveAsFile);
+        commandMap.put("help", parts -> displayHelp());
+        commandMap.put("exit", parts -> {
+            System.out.println("Exiting the application.");
+            running = false;
+        });
     }
 
     private void processCommand(String command) {
         String[] parts = command.split(" ");
         String action = parts[0];
+        Consumer<String[]> handler = commandMap.get(action);
 
-        switch (action) {
-            case "print":
-                printShapes();
-                break;
-            case "create":
-                createShape(parts);
-                break;
-            case "erase":
-                eraseShape(parts);
-                break;
-            case "translate":
-                translateShape(parts);
-                break;
-            case "within":
-                within(parts);
-                break;
-            case "open":
-                openFile(parts);
-                break;
-            case "close":
-                closeFile();
-                break;
-            case "save":
-                saveFile();
-                break;
-            case "saveas":
-                saveAsFile(parts);
-                break;
-            case "help":
-                displayHelp();
-                break;
-            case "exit":
-                System.out.println("Exiting the application.");
-                running = false;
-                break;
-            default:
-                System.out.println("Unknown command.");
+        if (handler != null) {
+            handler.accept(parts);
+        } else {
+            System.out.println("Unknown command.");
         }
     }
 
-
     private void printShapes() {
-        if (currentFilePath == null) {
-            System.out.println("No file is currently open.");
+        if (shapeManager.getShapes().isEmpty()) {
+            System.out.println("No shapes loaded.");
             return;
         }
 
         System.out.println("Shapes:");
         for (int i = 0; i < shapeManager.getShapes().size(); i++) {
             Shape shape = shapeManager.getShapes().get(i);
-
-            if (shape instanceof Rectangle) {
-                Rectangle rect = (Rectangle) shape;
-                System.out.printf("%d. rectangle %.0f %.0f %.0f %.0f %s\n", i, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), rect.getFill());
-            } else if (shape instanceof Circle) {
-                Circle circle = (Circle) shape;
-                System.out.printf("%d. circle %.0f %.0f %.0f %s\n", i, circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getFill());
-            } else if (shape instanceof Line) {
-                Line line = (Line) shape;
+            if (shape instanceof Rectangle rect) {
+                System.out.printf("%d. rectangle %.1f %.1f %.1f %.1f %s\n", i, rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight(), rect.getFill());
+            } else if (shape instanceof Circle circle) {
+                System.out.printf("%d. circle %.1f %.1f %.1f %s\n", i, circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getFill());
+            } else if (shape instanceof Line line) {
                 System.out.printf("%d. line %d %d %d %d\n", i, line.getX1(), line.getY1(), line.getX2(), line.getY2());
             }
         }
     }
 
     private void createShape(String[] parts) {
-        if (parts.length < 6) {
-            System.out.println("Usage: create <shape_type> <params> <color>");
+        if (parts.length < 2) {
+            System.out.println("Usage: create <shape_type> <params>");
             return;
         }
 
         String shapeType = parts[1];
-        String color = parts[parts.length - 1];
 
-        switch (shapeType) {
-            case "line":
-                shapeManager.addShape(new Line(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])));
-                System.out.println("Successfully created line.");
-                break;
-            case "circle":
-                shapeManager.addShape(new Circle(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), color));
-                System.out.println("Successfully created circle.");
-                break;
-            case "rectangle":
-                shapeManager.addShape(new Rectangle(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), color));
-                System.out.println("Successfully created rectangle.");
-                break;
-            default:
-                System.out.println("Unknown shape type.");
+        try {
+            switch (shapeType) {
+                case "line":
+                    shapeManager.addShape(new Line(Integer.parseInt(parts[2]), Integer.parseInt(parts[3]), Integer.parseInt(parts[4]), Integer.parseInt(parts[5])));
+                    System.out.println("Successfully created: line");
+                    break;
+                case "circle":
+                    shapeManager.addShape(new Circle(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), parts[5]));
+                    System.out.println("Successfully created: circle");
+                    break;
+                case "rectangle":
+                    shapeManager.addShape(new Rectangle(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Double.parseDouble(parts[4]), Double.parseDouble(parts[5]), parts[6]));
+                    System.out.println("Successfully created: rectangle");
+                    break;
+                default:
+                    System.out.println("Unknown shape type.");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid parameters for shape creation.");
         }
     }
 
@@ -131,7 +114,6 @@ public class SVGApplication {
         }
 
         int index = Integer.parseInt(parts[1]);
-
         if (index >= 0 && index < shapeManager.getShapes().size()) {
             shapeManager.removeShape(shapeManager.getShapes().get(index));
             System.out.printf("Erased a shape (%d)\n", index);
@@ -140,29 +122,15 @@ public class SVGApplication {
         }
     }
 
-
     private void translateShape(String[] parts) {
-        int deltaX = 0;
-        int deltaY = 0;
-        Integer index = null;
+        int deltaX = 10;
+        int deltaY = 10;
 
-        for (String part : parts) {
-            if (part.startsWith("vertical=")) {
-                deltaY = Integer.parseInt(part.substring("vertical=".length()));
-            } else if (part.startsWith("horizontal=")) {
-                deltaX = Integer.parseInt(part.substring("horizontal=".length()));
-            } else {
-                try {
-                    index = Integer.parseInt(part);
-                } catch (NumberFormatException ignored) {
-                }
-            }
-        }
-
-        if (index != null) {
+        if (parts.length == 2) {
+            int index = Integer.parseInt(parts[1]);
             if (index >= 0 && index < shapeManager.getShapes().size()) {
                 shapeManager.moveShape(shapeManager.getShapes().get(index), deltaX, deltaY);
-                System.out.println("Translated figure " + index);
+                System.out.println("Successfully translated figure " + index);
             } else {
                 System.out.println("Invalid index.");
             }
@@ -170,80 +138,66 @@ public class SVGApplication {
             for (Shape shape : shapeManager.getShapes()) {
                 shape.move(deltaX, deltaY);
             }
-            System.out.println("Translated all figures");
+            System.out.println("Successfully translated all figures.");
         }
     }
 
     private void within(String[] parts) {
         if (parts.length < 2) {
-            System.out.println("Usage: within <option> <params>");
+            System.out.println("Usage: within <circle|rectangle> <params>");
             return;
         }
 
         String option = parts[1];
+        boolean found = false;
 
         switch (option) {
-            case "circle":
+            case "circle" -> {
                 if (parts.length < 5) {
-                    System.out.println("Usage: within circle <cx> <cy> <radius>");
+                    System.out.println("Usage: within circle <cx> <cy> <r>");
                     return;
                 }
-
                 double cx = Double.parseDouble(parts[2]);
                 double cy = Double.parseDouble(parts[3]);
-                double radius = Double.parseDouble(parts[4]);
+                double r = Double.parseDouble(parts[4]);
 
                 System.out.println("Shapes within circle:");
-
-                boolean foundCircle = false;
-
                 for (Shape shape : shapeManager.getShapes()) {
-                    if (shape.isWithinCircle(cx, cy, radius)) {
+                    if (shape.isWithinCircle(cx, cy, r)) {
                         System.out.println(shape.toSVG());
-                        foundCircle = true;
+                        found = true;
                     }
                 }
-
-                if (!foundCircle) {
-                    System.out.printf("No figures are located within circle %f %f %f\n", cx, cy, radius);
+                if (!found) {
+                    System.out.println("No figures are located within the specified circle.");
                 }
+            }
 
-                break;
-
-            case "rectangle":
+            case "rectangle" -> {
                 if (parts.length < 6) {
-                    System.out.println("Usage: within rectangle <x> <y> <width> <height>");
+                    System.out.println("Usage: within rectangle <x> <y> <w> <h>");
                     return;
                 }
-
                 double x = Double.parseDouble(parts[2]);
                 double y = Double.parseDouble(parts[3]);
-                double width = Double.parseDouble(parts[4]);
-                double height = Double.parseDouble(parts[5]);
+                double w = Double.parseDouble(parts[4]);
+                double h = Double.parseDouble(parts[5]);
 
                 System.out.println("Shapes within rectangle:");
-
-                boolean foundRectangle = false;
-
                 for (Shape shape : shapeManager.getShapes()) {
-                    if (shape.isWithinRectangle(x, y, width, height)) {
+                    if (shape.isWithinRectangle(x, y, w, h)) {
                         System.out.println(shape.toSVG());
-                        foundRectangle = true;
+                        found = true;
                     }
                 }
-
-                if (!foundRectangle) {
-                    System.out.printf("No figures are located within rectangle %f %f %f %f\n", x, y, width, height);
+                if (!found) {
+                    System.out.println("No figures are located within the specified rectangle.");
                 }
+            }
 
-                break;
-
-            default:
-                System.out.println("Unknown option.");
-                break;
+            default -> System.out.println("Unknown option.");
         }
     }
-
 
     private void openFile(String[] parts) {
         if (parts.length < 2) {
@@ -252,39 +206,33 @@ public class SVGApplication {
         }
 
         String filename = parts[1];
-
         try {
             fileHandler.openFile(filename, shapeManager);
             currentFilePath = filename;
-            System.out.println("Successfully opened " + filename);
-
         } catch (IOException e) {
             System.out.println("Error opening file: " + e.getMessage());
         }
     }
 
-
     private void closeFile() {
         shapeManager = new ShapeManager();
         currentFilePath = null;
-        System.out.println("File closed.");
+        System.out.println("Successfully closed the file.");
     }
-
 
     private void saveFile() {
         if (currentFilePath == null) {
             System.out.println("No file is currently open. Use 'saveas' to save to a new file.");
-        } else {
-            try {
-                fileHandler.saveFile(currentFilePath, shapeManager);
-                System.out.println("Successfully saved the changes to " + currentFilePath);
+            return;
+        }
 
-            } catch (IOException e) {
-                System.out.println("Error saving file: " + e.getMessage());
-            }
+        try {
+            fileHandler.saveFile(currentFilePath, shapeManager);
+            System.out.println("Successfully saved: " + currentFilePath);
+        } catch (IOException e) {
+            System.out.println("Error saving file: " + e.getMessage());
         }
     }
-
 
     private void saveAsFile(String[] parts) {
         if (parts.length < 2) {
@@ -297,7 +245,7 @@ public class SVGApplication {
         try {
             fileHandler.saveFile(filename, shapeManager);
             currentFilePath = filename;
-            System.out.println("Successfully saved as " + filename);
+            System.out.println("Successfully saved: " + filename);
         } catch (IOException e) {
             System.out.println("Error saving file: " + e.getMessage());
         }
@@ -306,10 +254,10 @@ public class SVGApplication {
     private void displayHelp() {
         System.out.println("Available commands:");
         System.out.println("print - Print all shapes");
-        System.out.println("create <shape_type> <params> <color> - Create a new shape (line, circle, rectangle)");
+        System.out.println("create <shape_type> <params> - Create a new shape (line, circle, rectangle)");
         System.out.println("erase <n> - Erase shape at index n");
-        System.out.println("translate - Translate all shapes by a fixed amount");
-        System.out.println("within <option> <params> - Check shapes within a region (circle or rectangle)");
+        System.out.println("translate - Translate all shapes or one by index");
+        System.out.println("within <circle|rectangle> <params> - Check shapes within a region");
         System.out.println("open <filename> - Open an SVG file");
         System.out.println("close - Close the current file");
         System.out.println("save - Save the current file");
