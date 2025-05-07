@@ -33,7 +33,7 @@ public class Circle implements Shape {
 
     @Override
     public String toSVG() {
-        return String.format("<circle cx=\"%f\" cy=\"%f\" r=\"%f\" fill=\"%s\" />", centerX, centerY, radius, fill);
+        return String.format("<circle cx=\"%.0f\" cy=\"%.0f\" r=\"%.0f\" fill=\"%s\" />", centerX, centerY, radius, fill);
     }
 
     @Override

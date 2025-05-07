@@ -13,7 +13,6 @@ import java.util.List;
  */
 
 public class SVGFileHandler {
-
     /**
      * Отваря SVG файл и зарежда фигурите в мениджъра на фигури.
      *
@@ -24,8 +23,14 @@ public class SVGFileHandler {
         Path path = Paths.get(filename);
 
         if (!Files.exists(path)) {
-            System.out.println("File does not exist: " + filename);
-            return;
+            try {
+                String emptySvg = "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>";
+                Files.write(path, emptySvg.getBytes());
+                System.out.println("New empty SVG file created: " + filename);
+            } catch (IOException e) {
+                System.out.println("Error creating new file: " + e.getMessage());
+                return;
+            }
         }
 
         try {
