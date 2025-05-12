@@ -61,6 +61,15 @@ public class SVGApplication {
     private void processCommand(String command) {
         String[] parts = command.split(" ");
         String action = parts[0];
+
+        if (currentFilePath == null &&
+                !action.equals("open") &&
+                !action.equals("exit") &&
+                !action.equals("help")) {
+            System.out.println("No file is currently open.");
+            return;
+        }
+
         Consumer<String[]> handler = commandMap.get(action);
 
         if (handler != null) {
