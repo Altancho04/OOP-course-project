@@ -18,7 +18,7 @@ public class TranslateCommand implements Command{
 
         if (parts.length == 2) {
             try {
-                int index = Integer.parseInt(parts[1]) - 1; // Защото print започва от 1
+                int index = Integer.parseInt(parts[1]) - 1;
                 if (index >= 0 && index < shapeManager.getShapes().size()) {
                     shapeManager.moveShape(shapeManager.getShapes().get(index), deltaX, deltaY);
                     System.out.println("Translated figure (" + (index + 1) + ")");
