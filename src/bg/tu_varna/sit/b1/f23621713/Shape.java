@@ -7,6 +7,10 @@ package bg.tu_varna.sit.b1.f23621713;
  * в определен регион и да се конвертират в SVG представяне.
  */
 
+/**
+ * Клас Shape – интерфейс за всички фигури – съдържа методи за преместване, SVG, и проверки по позиция.
+ */
+
 public interface Shape {
     String toSVG();
     void move(int deltaX, int deltaY);

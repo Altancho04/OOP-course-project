@@ -12,6 +12,10 @@ import java.util.List;
  * Използва файловата система за четене/запис с вградени проверки и съобщения.
  */
 
+/**
+ * Клас SVGFileHandler – осигурява зареждане и запис на SVG файлове – използва се от Open и Save команди.
+ */
+
 public class SVGFileHandler {
     /**
      * Отваря SVG файл и зарежда фигурите в мениджъра на фигури.
@@ -19,6 +23,8 @@ public class SVGFileHandler {
      * @param filename      път до SVG файла
      * @param shapeManager  ShapeManager, който управлява всички фигури
      */
+    /** Зарежда фигури от SVG файл. @param filename име на файла @param shapeManager ShapeManager за зареждане */
+
     public void openFile(String filename, ShapeManager shapeManager) {
         Path path = Paths.get(filename);
 
@@ -59,8 +65,6 @@ public class SVGFileHandler {
                     shapeManager.addShape(new Rectangle(x, y, width, height, fill));
                 }
             }
-
-            System.out.println("Successfully opened " + filename);
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
         }
@@ -72,6 +76,8 @@ public class SVGFileHandler {
      * @param filename      път до SVG файла, в който ще се запише
      * @param shapeManager  ShapeManager, съдържащ фигурите
      */
+    /** Записва фигури във файл. @param filename име на файла @param shapeManager ShapeManager със съдържанието */
+
     public void saveFile(String filename, ShapeManager shapeManager) {
         try {
             Path path = Paths.get(filename);

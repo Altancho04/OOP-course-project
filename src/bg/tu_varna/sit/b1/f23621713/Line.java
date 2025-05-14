@@ -6,6 +6,9 @@ package bg.tu_varna.sit.b1.f23621713;
  * и преместване на линията по координатите.
  */
 
+/**
+ * Клас Line – представлява SVG фигура от тип line, имплементираща интерфейса Shape.
+ */
 
 public class Line implements Shape {
     private int x1, y1, x2, y2;
@@ -17,6 +20,7 @@ public class Line implements Shape {
         this.y2 = y2;
     }
 
+    /** Генерира SVG представяне на всички фигури. @return SVG съдържание като низ */
     @Override
     public String toSVG() {
         return String.format("<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke=\"black\" />", x1, y1, x2, y2);
@@ -30,11 +34,13 @@ public class Line implements Shape {
         y2 += deltaY;
     }
 
+    /** Проверява дали фигурата попада в зададения обхват. @return true ако попада, false ако не */
     @Override
     public boolean isWithinCircle(double cx, double cy, double radius) {
         return false;
     }
 
+    /** Проверява дали фигурата попада в зададения обхват. @return true ако попада, false ако не */
     @Override
     public boolean isWithinRectangle(double x, double y, double width, double height) {
         return false;
