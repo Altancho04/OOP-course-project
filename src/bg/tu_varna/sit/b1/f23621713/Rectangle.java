@@ -10,6 +10,7 @@ package bg.tu_varna.sit.b1.f23621713;
 /**
  * Клас Rectangle – представлява SVG фигура от тип rectangle, имплементираща интерфейса Shape.
  */
+
 public class Rectangle implements Shape {
     private double x;
     private double y;
