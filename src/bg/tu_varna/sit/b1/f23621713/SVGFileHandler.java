@@ -23,7 +23,9 @@ public class SVGFileHandler {
      * @param filename      път до SVG файла
      * @param shapeManager  ShapeManager, който управлява всички фигури
      */
-    /** Зарежда фигури от SVG файл. @param filename име на файла @param shapeManager ShapeManager за зареждане */
+    /**
+     * Зарежда фигури от SVG файл. @param filename име на файла @param shapeManager ShapeManager за зареждане
+     */
 
     public void openFile(String filename, ShapeManager shapeManager) {
         Path path = Paths.get(filename);
@@ -76,16 +78,13 @@ public class SVGFileHandler {
      * @param filename      път до SVG файла, в който ще се запише
      * @param shapeManager  ShapeManager, съдържащ фигурите
      */
-    /** Записва фигури във файл. @param filename име на файла @param shapeManager ShapeManager със съдържанието */
+    /**
+     * Записва фигури във файл. @param filename име на файла @param shapeManager ShapeManager със съдържанието
+     */
 
-    public void saveFile(String filename, ShapeManager shapeManager) {
-        try {
+    public void saveFile(String filename, ShapeManager shapeManager) throws IOException {
             Path path = Paths.get(filename);
             String svgContent = shapeManager.toSVG();
             Files.write(path, svgContent.getBytes());
-            System.out.println("Successfully saved to " + filename);
-        } catch (IOException e) {
-            System.out.println("Error saving file: " + e.getMessage());
-        }
     }
 }
