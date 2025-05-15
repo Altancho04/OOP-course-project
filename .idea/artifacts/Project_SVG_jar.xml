@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Project_SVG:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Project_SVG_jar</output-path>
+    <root id="archive" name="Project_SVG.jar">
+      <element id="module-output" name="Project_SVG" />
+    </root>
+  </artifact>
+</component>

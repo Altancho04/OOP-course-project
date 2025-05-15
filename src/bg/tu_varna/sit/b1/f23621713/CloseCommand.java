@@ -6,8 +6,6 @@ package bg.tu_varna.sit.b1.f23621713;
 
 public class CloseCommand implements Command{
     private ShapeManager shapeManager;
-    private String currentFilePath;
-
     public CloseCommand(ShapeManager shapeManager) {
         this.shapeManager = shapeManager;
     }
