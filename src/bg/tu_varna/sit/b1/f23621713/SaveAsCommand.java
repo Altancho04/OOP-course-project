@@ -1,5 +1,7 @@
 package bg.tu_varna.sit.b1.f23621713;
 
+import java.io.IOException;
+
 /**
  * Клас SaveAsCommand – команда за запис на фигурите в нов SVG файл.
  */
@@ -24,7 +26,11 @@ public class SaveAsCommand implements Command{
 
         String filename = parts[1];
 
-        fileHandler.saveFile(filename, shapeManager);
+        try {
+            fileHandler.saveFile(filename, shapeManager);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Successfully saved " + filename);
     }
 }

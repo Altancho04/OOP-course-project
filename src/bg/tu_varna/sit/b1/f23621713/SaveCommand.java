@@ -1,5 +1,7 @@
 package bg.tu_varna.sit.b1.f23621713;
 
+import java.io.IOException;
+
 /**
  * Клас SaveCommand – команда за запис в текущия SVG файл.
  */
@@ -22,7 +24,11 @@ public class SaveCommand implements Command{
             System.out.println("No file is currently open. Use 'saveas' to save to a new file.");
             return;
         }
-        fileHandler.saveFile(currentFilePath, shapeManager);
+        try {
+            fileHandler.saveFile(currentFilePath, shapeManager);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Successfully saved " + currentFilePath);
     }
 }
