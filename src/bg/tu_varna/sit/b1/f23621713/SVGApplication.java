@@ -41,7 +41,7 @@ public class SVGApplication {
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to the SVG Application!\nPlease enter help command!");
+        System.out.println("\nWelcome to the SVG Application!\nPlease enter help command!");
 
         while (running[0]) {
             System.out.print("\n > ");
